@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "RoslynToTS": {
+      "commandName": "Project",
+      "commandLineArgs": "Templates/main.scriban-txt",
+      "workingDirectory": "c:\\projects\\datacruise"
+    }
+  }
+}
