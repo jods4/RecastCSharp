@@ -15,7 +15,7 @@ public class RoslynType : IEquatable<RoslynType>, IName
 
   internal static void ClearAnonymousNames() => anonymous.Clear();
 
-  public string Name 
+  public string Name
   {
     get
     {
@@ -65,8 +65,8 @@ public class RoslynType : IEquatable<RoslynType>, IName
       return InheritedTypes(symbol)
         .SelectMany(type => type.GetMembers())
         .OfType<IPropertySymbol>()
-        .Where(p => p.DeclaredAccessibility == Accessibility.Public 
-                 && !p.IsStatic 
+        .Where(p => p.DeclaredAccessibility == Accessibility.Public
+                 && !p.IsStatic
                  && !IsOverriden(p))
         .Select(p => new Property(p));
     }
@@ -85,6 +85,8 @@ public class RoslynType : IEquatable<RoslynType>, IName
   #region Generic types
 
   public bool IsGeneric => (symbol as INamedTypeSymbol)?.IsGenericType ?? false;
+
+  public RoslynType ConstructedFrom => new RoslynType(((INamedTypeSymbol)symbol).ConstructedFrom);
 
   internal IReadOnlyList<ITypeSymbol>? TypeArguments => (symbol as INamedTypeSymbol)?.TypeArguments;
 

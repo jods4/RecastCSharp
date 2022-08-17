@@ -60,6 +60,9 @@ public class TypeBuiltin : ScriptObject
 
   public static string Enqueue(RoslynType type)
   {
+    if (type.IsGeneric)
+      type = type.ConstructedFrom;
+
     if (seenTypes.Add(type))
       queue.Enqueue(type);
     return type.Name;
