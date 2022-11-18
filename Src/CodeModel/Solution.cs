@@ -41,7 +41,7 @@ class Solution : IDisposable
     matcher.AddIncludePatterns(glob.Split(','));
 
     projects = solution.Projects
-      .Where(p => matcher.Match(Path.GetDirectoryName(slnFile), p.FilePath).HasMatches)
+      .Where(p => matcher.Match(Path.GetDirectoryName(slnFile)!, p.FilePath!).HasMatches)
       .Select(p => new Project(p.Id))
       .ToList();
   }
