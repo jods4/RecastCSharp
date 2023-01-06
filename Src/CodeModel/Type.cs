@@ -72,6 +72,35 @@ public class RoslynType : IEquatable<RoslynType>, IName
     }
   }
 
+  public IEnumerable<Method> Methods
+  {
+    get
+    {
+      HashSet<IMethodSymbol>? overrides = null;
+
+      bool IsOverriden(IMethodSymbol m)
+      {
+        if (m.IsOverride)
+        {
+          overrides ??= new(SymbolEqualityComparer.Default);
+          overrides.Add(m.OverriddenMethod!);
+          return overrides.Contains(m);
+        }
+
+        if (m.IsVirtual || m.IsAbstract)
+          return overrides?.Contains(m) ?? false;
+
+        return false;
+      }
+
+      return InheritedTypes(symbol)
+        .SelectMany(t => t.GetMembers())
+        .OfType<IMethodSymbol>()
+        .Where(m => !IsOverriden(m))
+        .Select(m => new Method(m, null! /* No support for inferring return types from body here */));
+    }
+  }
+
   #region Enum types
 
   public bool IsEnum => symbol.TypeKind == TypeKind.Enum;

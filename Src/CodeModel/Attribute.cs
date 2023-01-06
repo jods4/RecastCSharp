@@ -35,6 +35,8 @@ public class RoslynAttribute : IName
     }
   }
 
+  internal IReadOnlyList<ITypeSymbol>? TypeArguments => attr.AttributeClass?.TypeArguments;
+
   public RoslynAttribute(AttributeData attr)
   {
     this.attr = attr;

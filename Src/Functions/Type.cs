@@ -43,9 +43,14 @@ public class TypeBuiltin : ScriptObject
     return implemented != null ? new RoslynType(implemented) : null;
   }
 
-  public static RoslynType? Argument(RoslynType? type, int position)
+  public static RoslynType? Argument(object? target, int position)
   {
-    var argument = type?.TypeArguments?[position];
+    var argument = target switch
+    {
+      RoslynType type => type.TypeArguments?[position],
+      RoslynAttribute attr => attr.TypeArguments?[position],
+      _ => null,
+    };
     return argument != null ? new RoslynType(argument) : null;
   }
 
