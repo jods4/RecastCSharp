@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -24,7 +24,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.4.0" />
     <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="7.0.0" />
     <PackageReference Include="Polly" Version="7.2.3" />
-    <PackageReference Include="Scriban" Version="5.5.0" />
+    <PackageReference Include="Scriban" Version="5.5.2" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
   </ItemGroup>
 
