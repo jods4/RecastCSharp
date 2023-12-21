@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RecastCSharp.CodeModel;
 
-public class Project
+public class Project : IName
 {
   private readonly ProjectId id;
   private Microsoft.CodeAnalysis.Project project = null!; // Never null after Build
