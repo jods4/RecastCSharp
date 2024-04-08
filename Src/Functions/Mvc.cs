@@ -142,6 +142,7 @@ public class MvcBuiltin : ScriptObject
     // but this is hard to determine in general so it's best to use an attribute for the code generator's sake
     return
       p.Type.IsComplex()
+      && p.Type.Name != "CancellationToken"
       // Byte arrays can be parsed from a query string parameter as base64 strings
       && p.Type is not IArrayTypeSymbol { ElementType: { SpecialType: SpecialType.System_Byte } };
   }
@@ -172,12 +173,13 @@ public class MvcBuiltin : ScriptObject
   public static IEnumerable<Parameter> Parameters(Method method, params string[] sources)
   {
     sources = sources.Length == 0
-      ? new[] { "FromRouteAttribute", "FromQueryAttribute", "FromBodyAttribute", "FromFormAttribute" }
+      ? [ "FromRouteAttribute", "FromQueryAttribute", "FromBodyAttribute", "FromFormAttribute" ]
       : Array.ConvertAll(sources, x => "From" + x + "Attribute");
 
     bool includeNoAttribute = sources.Contains("FromQueryAttribute");
 
     return from p in method.symbol.Parameters
+           where p.Type.Name != "CancellationToken"
            let fromAttr = p.GetAttributes().FirstOrDefault(a => a.AttributeClass!.Name.StartsWith("From", StringComparison.Ordinal))
            where fromAttr != null
             ? sources.Contains(fromAttr.AttributeClass!.Name)
