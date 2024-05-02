@@ -57,8 +57,8 @@ public class MvcBuiltin : ScriptObject
 
     var path = UrlBuiltin
       .Join(RouteFromAttribute(controller.Symbol), RouteFromAttribute(method.symbol))
-      .Replace("[controller]", controllerName)
-      .Replace("{([^}:?]+)[^}]*}", "${$1}"); // Handle parameters in route segments: remove constraints such as :int or optional?, and add ${} interpolation
+      .Replace("[controller]", controllerName);
+    path = Regex.Replace(path, @"\{([^}:?]+)[^}]*\}", "${$1}"); // Handle parameters in route segments: remove constraints such as :int or optional?, and add ${} interpolation
 
     var routeTokens = RouteTokens(method);
 
