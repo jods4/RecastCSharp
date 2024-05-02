@@ -83,7 +83,7 @@ public class MvcBuiltin : ScriptObject
     var tokens = RouteFromAttribute(method.symbol) is not string route
       ? null
       : Regex
-        .Matches(route, @"\{([^}]+)(\:[^}?]*)?\??\}")
+        .Matches(route, @"\{([^}:?]+)(\:[^}?]*)?\??\}")
         .Cast<Match>()
         .Select(m => m.Groups[1].Value)
         .ToList();
