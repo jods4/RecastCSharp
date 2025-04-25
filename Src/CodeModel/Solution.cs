@@ -1,4 +1,3 @@
-using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.MSBuild;
 using Microsoft.CodeAnalysis.Text;
@@ -19,9 +18,6 @@ class Solution : IDisposable
 
   public Code Code => new Code(projects);
 
-  static Solution()
-    => MSBuildLocator.RegisterDefaults();
-
   public Solution(string slnFile)
   {
     this.slnFile = slnFile;
@@ -29,7 +25,16 @@ class Solution : IDisposable
     workspace.WorkspaceFailed += (sender, e) =>
     {
       if (e.Diagnostic.Kind == WorkspaceDiagnosticKind.Failure || MainScript.Verbose)
+      {
+        // For code-generation purposes, we don't care about the new-enabled-by-default Nuget warnings
+        // regarding security vulnerabilities in dependencies.
+        // Unfortunately, Diagnostic doesn't expose a code, just Kind and Message :(
+        // These errors can be disabled in csproj, but then they wouldn't show up during normal compilation either.
+        if (e.Diagnostic.Message.Contains("has a known critical severity vulnerability"))
+          return;
+
         ConsoleEx.Error("Workspace failure: " + e.Diagnostic.Message);
+      }
     };
   }
 
