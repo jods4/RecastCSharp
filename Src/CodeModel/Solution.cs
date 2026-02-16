@@ -22,7 +22,9 @@ class Solution : IDisposable
   {
     this.slnFile = slnFile;
 
-    workspace.WorkspaceFailed += (sender, e) =>
+    workspace.SkipUnrecognizedProjects = true;
+
+    workspace.RegisterWorkspaceFailedHandler(e =>
     {
       if (e.Diagnostic.Kind == WorkspaceDiagnosticKind.Failure || MainScript.Verbose)
       {
@@ -35,7 +37,7 @@ class Solution : IDisposable
 
         ConsoleEx.Error("Workspace failure: " + e.Diagnostic.Message);
       }
-    };
+    });
   }
 
   public async Task LoadProjects(string glob)

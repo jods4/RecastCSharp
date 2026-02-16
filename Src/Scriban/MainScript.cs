@@ -35,6 +35,7 @@ class MainScript
     {
       TemplateLoader = new FileTemplateLoader(),
       AutoIndent = false,
+      LoopLimit = 0,
     };
 
     var globals = new ScriptObject();
